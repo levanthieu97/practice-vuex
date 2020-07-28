@@ -1,32 +1,58 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  <div>
+    <v-app id="inspire">
+      <app-bar class="app--bar"/>
+      <navigation-drawer class="navigation--drawer"/>
+      <v-main>
+        <router-view/>
+      </v-main>
+    </v-app>
+    
+    <!-- <v-snackbar
+      v-model="show"
+      :timeout="3000"
+      :color="snackbar.color"
+      :multi-line="true"
+      top
+      right
+    >
+      {{ snackbar.text }}
+      <v-btn dark flat icon @click.native="show = false">
+        <v-icon> mdi-close-circle-outline</v-icon>
+      </v-btn>
+    </v-snackbar> -->
   </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import {mapState, mapActions} from 'vuex';
+import { AppBar, NavigationDrawer } from './components/layout' 
+export default {
+  components: {
+    AppBar,
+    NavigationDrawer
+  },
 
-#nav {
-  padding: 30px;
-}
+  data: () => ({
+    //
+  }),
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  computed: {
+    ...mapState('global', ['snackbar']),
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+    show: {
+      get(){
+        return this.snackbar.show;
+      },
+
+      set(){
+        this.resetMsg();
+      }
+    }
+  },
+
+  methods: {
+    ...mapActions('global', ['resetMsg'])
+  }
+};
+</script>
